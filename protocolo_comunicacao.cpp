@@ -19,10 +19,11 @@ Pilha D Cheio = D1
 Pilha D Vazio = D0}
 
 Analisar Imagem = AI
+Pilha Nova = PN0
 
 AI0 = 9V
 AI1 = AA
 AI2 = AAA
 AI3 = C
 AI4 = D
-AI5 = UNKWON
+AI5 = UKNWON
