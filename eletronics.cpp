@@ -71,7 +71,7 @@ int main() {
     gpioSetMode(SENSOR_IR_4, PI_INPUT);
     gpioSetMode(SENSOR_IR_5, PI_INPUT);
 
-    // Configura a interrupção para a borda de subida (RISING) do sinal
+    // Configura a interrupção para a borda de descida (FALLING) do sinal
      if (gpioSetISRFunc(SENSOR_HALL, FALLING_EDGE, 0, ISRGaveta) < 0) {
         std::cerr << "Falha ao inicializar a interrupção" << std::endl;
         return 1;
