@@ -16,7 +16,8 @@ Pilha C Cheio = C1
 Pilha C Vazio = C0
 
 Pilha D Cheio = D1
-Pilha D Vazio = D0}
+Pilha D Vazio = D0
+}
 
 Analisar Imagem = AI
 Pilha Nova = PN0
@@ -26,4 +27,4 @@ AI1 = AA
 AI2 = AAA
 AI3 = C
 AI4 = D
-AI5 = UKNWON
+AI5 = UNKNOWN
