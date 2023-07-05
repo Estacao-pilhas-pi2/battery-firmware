@@ -43,11 +43,11 @@ int main() {
 		   (mensagem.compare("AI4")==0);
 
 	if(mensagem.compare("AI5")==0){
-		std::cout << "Não é pilha" << std::endl;
+		std::cerr << "Não é pilha" << std::endl;
 		gpioServo(SERVO0, 2500);
 		time_sleep(1);
 	} else if(condicao){
-		std::cout << "É pilha" << std::endl;
+		std::cerr << "É pilha" << std::endl;
 		gpioServo(SERVO0, 700);
 		time_sleep(1);
 	}
