@@ -25,7 +25,8 @@
 #define POS3 3	// 
 #define POS4 4	// 
 
-char respostaIA[4];
+std::string respostaIA;
+//char respostaIA[4];
 const int speed = 1000;		// Velocidade do motor de passo (em microssegundos)
 int posicaoAtual = 0;
 
@@ -53,11 +54,11 @@ void ISREntrada(int gpio, int level, uint32_t tick) {
 	// Girar servo pra posição neutra
 	// DESCOBRIR FUNÇÕES DE GIRAR SERVO
 	
-    std::cout << "Interrupção detectada no Sensor IR!" << std::endl;
+    	std::cerr << "Interrupção detectada no Sensor IR!" << std::endl;
 	// Avisa IA para começar análise
-    std::cout << "AI" << std::endl;
+    	std::cout << "AI" << std::endl;
 	// Espera a resposta da IA
-	scanf("%s", &respostaIA);
+	std::getline(std::cin, respostaIA);
 	
 	int delta = 0;
 	int direcao = 0;
@@ -65,19 +66,24 @@ void ISREntrada(int gpio, int level, uint32_t tick) {
 	// DESCOBRIR A DIREÇÃO DO MOTOR
 	// DESCOBRIR OS PASSOS DO MOTOR
 	// Calcula o quanto o motor deve girar e direção
-	if(strcmp(respostaIA, "AI0\0") == 0){
+	if(respostaIA.compare("AI0") == 0){
+	//if(strcmp(respostaIA, "AI0\0") == 0){
 		delta = POS0 - posicaoAtual;
 	}
-	else if(strcmp(respostaIA, "AI1\0") == 0){
+	else if(respostaIA.compare("AI1") == 0){
+	//else if(strcmp(respostaIA, "AI1\0") == 0){
 		delta = POS1 - posicaoAtual;
 	}
-	else if(strcmp(respostaIA, "AI2\0") == 0){
+	else if(respostaIA.compare("AI2") == 0){
+	//else if(strcmp(respostaIA, "AI2\0") == 0){
 		delta = POS2 - posicaoAtual;
 	}
-	else if(strcmp(respostaIA, "AI3\0") == 0){
+	else if(respostaIA.compare("AI3") == 0){
+	//else if(strcmp(respostaIA, "AI3\0") == 0){
 		delta = POS3 - posicaoAtual;
 	}
-	else if(strcmp(respostaIA, "AI4\0") == 0){
+	else if(respostaIA.compare("AI4") == 0){
+	//else if(strcmp(respostaIA, "AI4\0") == 0){
 		delta = POS4 - posicaoAtual;
 	}
 	else{
@@ -88,7 +94,8 @@ void ISREntrada(int gpio, int level, uint32_t tick) {
 	moveStepper(abs(delta)*20, direcao);
 	
 	// Gira os servos para derrubar pilha
-	if(strcmp(respostaIA, "AI5\0") == 0){
+	if(respostaIA.compare("AI5") == 0){
+	//if(strcmp(respostaIA, "AI5\0") == 0){
 		// Girar pra fora
 	} else {
 		// Girar pra dentro
@@ -103,7 +110,7 @@ void ISRGaveta(int gpio, int level, uint32_t tick) {
 	}
 	
     // Lógica a ser executada quando ocorrer a interrupção
-    std::cout << "Interrupção detectada no Sensor Hall!" << std::endl;
+    std::cerr << "Interrupção detectada no Sensor Hall!" << std::endl;
 	// Indica o estado de cada compartimento (vazio ou não-vazio)
 	if (gpioRead(SENSOR_HALL) == 0) {
 		std::cout << "G1" << std::endl;
@@ -171,7 +178,7 @@ int main() {
     }
 	
 
-    std::cout << "Inicialização concluída" << std::endl;
+    std::cerr << "Inicialização concluída" << std::endl;
     // Lógica principal do programa
     while (true) {
         // Realize outras tarefas ou espere aqui
