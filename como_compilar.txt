@@ -1,0 +1,1 @@
+ g++ -o file.out -Wall file.cpp -lpigpio -lrt
