@@ -1,7 +1,7 @@
 #include <iostream>
 #include <pigpio.h>
 #include <string.h>
-
+#include <unistd.h>
 // sensores com interupções
 #define SENSOR_IR_ENTRADA 18 	// GPIO 18
 #define SENSOR_HALL 17 			// GPIO 17
@@ -59,7 +59,7 @@ void ISREntrada(int gpio, int level, uint32_t tick) {
 	
     std::cerr << "Interrupção detectada no Sensor IR!" << std::endl;
 	// Avisa IA para começar análise
-    std::cout << "AI" << std::endl;
+    std::cout << "AI" << std::endl << std::flush;
 	// Espera a resposta da IA
 	std::getline(std::cin, respostaIA);
 	
@@ -69,19 +69,19 @@ void ISREntrada(int gpio, int level, uint32_t tick) {
 	// DESCOBRIR A DIREÇÃO DO MOTOR
 	// DESCOBRIR OS PASSOS DO MOTOR
 	// Calcula o quanto o motor deve girar e direção
-	if(mensagem.compare("AI0")==0){
+	if(respostaIA.compare("AI0")==0){
 		delta = POS0 - posicaoAtual;
 	}
-	else if(mensagem.compare("AI1")==0){
+	else if(respostaIA.compare("AI1")==0){
 		delta = POS1 - posicaoAtual;
 	}
-	else if(mensagem.compare("AI2")==0){
+	else if(respostaIA.compare("AI2")==0){
 		delta = POS2 - posicaoAtual;
 	}
-	else if(mensagem.compare("AI3")==0){
+	else if(respostaIA.compare("AI3")==0){
 		delta = POS3 - posicaoAtual;
 	}
-	else if(mensagem.compare("AI4")==0){
+	else if(respostaIA.compare("AI4")==0){
 		delta = POS4 - posicaoAtual;
 	}
 	else{
@@ -92,7 +92,7 @@ void ISREntrada(int gpio, int level, uint32_t tick) {
 	moveStepper(abs(delta)*20, direcao);
 	
 	// Gira os servos para derrubar pilha
-	if(mensagem.compare("AI5")==0){
+	if(respostaIA.compare("AI5")==0){
 		std::cerr << "Não é pilha" << std::endl;
 		gpioServo(SERVO0, 2500);
 		time_sleep(1);
@@ -111,42 +111,42 @@ void ISRGaveta(int gpio, int level, uint32_t tick) {
 	}
 	
     // Lógica a ser executada quando ocorrer a interrupção
-    std::cout << "Interrupção detectada no Sensor Hall!" << std::endl;
+    std::cerr << "Interrupção detectada no Sensor Hall!" << std::endl;
 	// Indica o estado de cada compartimento (vazio ou não-vazio)
 	if (gpioRead(SENSOR_HALL) == 0) {
-		std::cout << "G1" << std::endl;
+		std::cout << "G1" << std::endl << std::flush;
 	} else {
-		std::cout << "G0" << std::endl;
+		std::cout << "G0" << std::endl << std::flush;
 	}
 
 	if (gpioRead(SENSOR_IR_1) == 0) {
-		std::cout << "AAA1" << std::endl;
+		std::cout << "AAA1" << std::endl << std::flush;
 	} else {
-		std::cout << "AAA0" << std::endl;
+		std::cout << "AAA0" << std::endl << std::flush;
 	}
 
 	if (gpioRead(SENSOR_IR_2) == 0) {
-		std::cout << "AA1" << std::endl;
+		std::cout << "AA1" << std::endl << std::flush;
 	} else {
-		std::cout << "AA0" << std::endl;
+		std::cout << "AA0" << std::endl << std::flush;
 	}
 
 	if (gpioRead(SENSOR_IR_3) == 0) {
-		std::cout << "9V1" << std::endl;
+		std::cout << "9V1" << std::endl << std::flush;
 	} else {
-		std::cout << "9V0" << std::endl;
+		std::cout << "9V0" << std::endl << std::flush;
 	}
 
 	if (gpioRead(SENSOR_IR_4) == 0) {
-		std::cout << "C1" << std::endl;
+		std::cout << "C1" << std::endl << std::flush;
 	} else {
-		std::cout << "C0" << std::endl;
+		std::cout << "C0" << std::endl << std::flush;
 	}
 
 	if (gpioRead(SENSOR_IR_5) == 0) {
-		std::cout << "D1" << std::endl;
+		std::cout << "D1" << std::endl << std::flush;
 	} else {
-		std::cout << "D0" << std::endl;
+		std::cout << "D0" << std::endl << std::flush;
 	}
 }
 
@@ -182,6 +182,7 @@ int main() {
     // Lógica principal do programa
     while (true) {
         // Realize outras tarefas ou espere aqui
+        pause();
     }
 
     gpioTerminate();  // Encerra a biblioteca pigpio
