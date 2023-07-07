@@ -18,6 +18,9 @@
 #define STPMotor 22 // GPIO 22
 #define ENAMotor 26 // GPIO 26
 
+#define SERVO0 12	// GPIO 12 (PWM0)
+#define SERVO1 13	// GPIO 13 (PWM1)
+
 // posições do motor de passo
 #define POS0 0	// 
 #define POS1 1	// 
@@ -25,7 +28,7 @@
 #define POS3 3	// 
 #define POS4 4	// 
 
-char respostaIA[4];
+std::string respostaIA;
 const int speed = 1000;		// Velocidade do motor de passo (em microssegundos)
 int posicaoAtual = 0;
 
@@ -51,13 +54,14 @@ void ISREntrada(int gpio, int level, uint32_t tick) {
 	}
 	
 	// Girar servo pra posição neutra
-	// DESCOBRIR FUNÇÕES DE GIRAR SERVO
+	gpioServo(SERVO0, (2500+700)/2);
+	gpioServo(SERVO1, (2500+700)/2);
 	
-    std::cout << "Interrupção detectada no Sensor IR!" << std::endl;
+    std::cerr << "Interrupção detectada no Sensor IR!" << std::endl;
 	// Avisa IA para começar análise
     std::cout << "AI" << std::endl;
 	// Espera a resposta da IA
-	scanf("%s", &respostaIA);
+	std::getline(std::cin, respostaIA);
 	
 	int delta = 0;
 	int direcao = 0;
@@ -65,19 +69,19 @@ void ISREntrada(int gpio, int level, uint32_t tick) {
 	// DESCOBRIR A DIREÇÃO DO MOTOR
 	// DESCOBRIR OS PASSOS DO MOTOR
 	// Calcula o quanto o motor deve girar e direção
-	if(strcmp(respostaIA, "AI0\0") == 0){
+	if(mensagem.compare("AI0")==0){
 		delta = POS0 - posicaoAtual;
 	}
-	else if(strcmp(respostaIA, "AI1\0") == 0){
+	else if(mensagem.compare("AI1")==0){
 		delta = POS1 - posicaoAtual;
 	}
-	else if(strcmp(respostaIA, "AI2\0") == 0){
+	else if(mensagem.compare("AI2")==0){
 		delta = POS2 - posicaoAtual;
 	}
-	else if(strcmp(respostaIA, "AI3\0") == 0){
+	else if(mensagem.compare("AI3")==0){
 		delta = POS3 - posicaoAtual;
 	}
-	else if(strcmp(respostaIA, "AI4\0") == 0){
+	else if(mensagem.compare("AI4")==0){
 		delta = POS4 - posicaoAtual;
 	}
 	else{
@@ -88,10 +92,14 @@ void ISREntrada(int gpio, int level, uint32_t tick) {
 	moveStepper(abs(delta)*20, direcao);
 	
 	// Gira os servos para derrubar pilha
-	if(strcmp(respostaIA, "AI5\0") == 0){
-		// Girar pra fora
+	if(mensagem.compare("AI5")==0){
+		std::cerr << "Não é pilha" << std::endl;
+		gpioServo(SERVO0, 2500);
+		time_sleep(1);
 	} else {
-		// Girar pra dentro
+		std::cerr << "É pilha" << std::endl;
+		gpioServo(SERVO0, 700);
+		time_sleep(1);
 	}
 }
 
