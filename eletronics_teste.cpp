@@ -106,7 +106,7 @@ void ISREntrada(int gpio, int level, uint32_t tick) {
 // ISR para tratar fechamento da gaveta (sensor hall)
 void ISRGaveta(int gpio, int level, uint32_t tick) {
 	// Debouncing do sensor
-	double tempoInicial = time_time();			// Tempo em segundos
+	double tempoInicial = time_time();		// Tempo em segundos
 	while(time_time() < tempoInicial + 0.01){	// Aguarda 10 ms
 	}
 	
@@ -114,40 +114,42 @@ void ISRGaveta(int gpio, int level, uint32_t tick) {
     std::cerr << "Interrupção detectada no Sensor Hall!" << std::endl;
 	// Indica o estado de cada compartimento (vazio ou não-vazio)
 	if (gpioRead(SENSOR_HALL) == 0) {
-		std::cout << "G1" << std::endl << std::flush;
+		std::cout << "G1";
 	} else {
-		std::cout << "G0" << std::endl << std::flush;
+		std::cout << "G0";
 	}
-
+	std::cout << " ";
 	if (gpioRead(SENSOR_IR_1) == 0) {
-		std::cout << "AAA1" << std::endl << std::flush;
+		std::cout << "AAA1";
 	} else {
-		std::cout << "AAA0" << std::endl << std::flush;
+		std::cout << "AAA0";
 	}
-
+	std::cout << " ";
 	if (gpioRead(SENSOR_IR_2) == 0) {
-		std::cout << "AA1" << std::endl << std::flush;
+		std::cout << "AA1";
 	} else {
-		std::cout << "AA0" << std::endl << std::flush;
+		std::cout << "AA0";
 	}
-
+	std::cout << " ";
 	if (gpioRead(SENSOR_IR_3) == 0) {
-		std::cout << "9V1" << std::endl << std::flush;
+		std::cout << "9V1";
 	} else {
-		std::cout << "9V0" << std::endl << std::flush;
+		std::cout << "9V0";
 	}
-
+	std::cout << " ";
 	if (gpioRead(SENSOR_IR_4) == 0) {
-		std::cout << "C1" << std::endl << std::flush;
+		std::cout << "C1";
 	} else {
-		std::cout << "C0" << std::endl << std::flush;
+		std::cout << "C0";
 	}
-
+	std::cout << " ";
 	if (gpioRead(SENSOR_IR_5) == 0) {
-		std::cout << "D1" << std::endl << std::flush;
+		std::cout << "D1";
 	} else {
-		std::cout << "D0" << std::endl << std::flush;
+		std::cout << "D0";
 	}
+	std::cout << " ";
+	std::cout << std::endl << std::flush;
 }
 
 int main() {
